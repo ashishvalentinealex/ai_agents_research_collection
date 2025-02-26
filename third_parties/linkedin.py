@@ -11,7 +11,7 @@ def scrape_linkedin_profile(linkedin_profile: str, mock: bool = False):
 
     if mock: 
         linkedin_profile_url = "https://gist.githubusercontent.com/ashishvalentinealex/d38965a27126efc057a395eafc4b63b9/raw/465a1536d8f9fa4d3f910c0024dd16b8c8c150c3/gistfile1.txt"
-        print(f"[DEBUG] Mock URL: {linkedin_profile_url}")  # Debugging statement
+        # print(f"[DEBUG] Mock URL: {linkedin_profile_url}")  # Debugging statement
         response = requests.get(linkedin_profile_url, timeout=10)
         return response.json()
 
@@ -21,8 +21,8 @@ def scrape_linkedin_profile(linkedin_profile: str, mock: bool = False):
             "apikey": os.environ["SCRAPIN_API_KEY"],
             "linkedInUrl": linkedin_profile,  # This should be linkedin_profile, not linkedin_profile_url
         }
-        print(f"[DEBUG] API Endpoint: {api_endpoint}")  # Debugging statement
-        print(f"[DEBUG] Params: {params}")  # Debugging statement
+        # print(f"[DEBUG] API Endpoint: {api_endpoint}")  # Debugging statement
+        # print(f"[DEBUG] Params: {params}")  # Debugging statement
         
         response = requests.get(
             api_endpoint,
@@ -30,8 +30,8 @@ def scrape_linkedin_profile(linkedin_profile: str, mock: bool = False):
             timeout=10,
         )
 
-    print(f"[DEBUG] Response Status Code: {response.status_code}")  # Debugging statement
-    print(f"[DEBUG] Response Content: {response.text[:500]}")  # Debugging statement (limit for readability)
+    # print(f"[DEBUG] Response Status Code: {response.status_code}")  # Debugging statement
+    # print(f"[DEBUG] Response Content: {response.text[:500]}")  # Debugging statement (limit for readability)
 
     data = response.json()
 

@@ -5,13 +5,13 @@ from langchain.chains import LLMChain
 from dotenv import load_dotenv
 
 from third_parties.linkedin import scrape_linkedin_profile 
+from agents.linkedin_lookup import lookup as linkedin_lookup_agent
 
-if __name__ == "__main__":
-    load_dotenv()
-    openai_api = os.getenv("OPENAI_API_KEY")
+def get_linkedin_info(name:str) -> str:
+   linkedin_username = linkedin_lookup_agent(name=name)
+   linkedin_data = scrape_linkedin_profile(linkedin_profile=linkedin_username)
 
-    
-    prompt_template = """
+   prompt_template = """
 You are an expert profile summarizer. Given the LinkedIn information {information} about a person, generate the following:
 
 1. A Compelling Short Summary (3-4 sentences)  
@@ -33,17 +33,34 @@ You are an expert profile summarizer. Given the LinkedIn information {informatio
 
 Make the response structured, natural, and engaging, as if a career expert wrote it.  
 """
-
-    summary_prompt_template = PromptTemplate(input_variables=["information"],
+   summary_prompt_template = PromptTemplate(input_variables=["information"],
                                              template=prompt_template
                                              )
-    
-    llm = LLMChain(llm=OpenAI(), prompt=summary_prompt_template)
-    chain = summary_prompt_template | llm 
-    linkedin_data = scrape_linkedin_profile(linkedin_profile="hello world",
-        mock=True
-    )
-    res = chain.invoke(input={"information": linkedin_data})
+   llm = LLMChain(llm=OpenAI(), prompt=summary_prompt_template)
+   chain = summary_prompt_template | llm 
+   # linkedin_data = scrape_linkedin_profile(linkedin_profile="hello world",
+   #    mock=True
+   # )
 
-    print("\n")
-    print(res["text"])
+   res = chain.invoke(input={"information": linkedin_data})
+
+   print("\n")
+   print(res["text"])
+
+
+
+
+
+if __name__ == "__main__":
+   load_dotenv()
+   openai_api = os.getenv("OPENAI_API_KEY")
+   get_linkedin_info(name="Anushree Kose, Pipra Solutions")
+
+
+    
+    
+
+    
+    
+    
+    
